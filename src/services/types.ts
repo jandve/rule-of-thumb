@@ -14,4 +14,4 @@ interface Ruler {
   }
 }
 
-export type { PreviousRulingResponse }
+export type { PreviousRulingResponse, Ruler }
