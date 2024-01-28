@@ -1,15 +1,17 @@
 import styled from "styled-components";
-import Gauge from "./Gauge";
+import { appColors, fontWeight, H6 } from "../../common/Typography";
+import { differenceInDays, differenceInMonths, parseISO } from "date-fns";
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  z-index: 10;
+  padding-top: 16px;
 `;
 
 const VoteContainer = styled.div`
   margin: 0 30px 8px 0;
-  width: 50%;
   align-self: flex-end;
   align-items: center;
   display: flex;
@@ -22,29 +24,51 @@ const Button = styled.button`
   color: var(--color-white);
   width: 110px;
   height: 36px;
+  cursor: pointer;
 `;
 
-const VoteRuler = () => (
-  <Container>
-    <VoteContainer>
-      <button
-        className="icon-button"
-        aria-label="thumbs up"
-        style={{ width: "30px", height: "30px", padding: "6px" }}
+type Props = {
+  positiveVotes: number;
+  negativeVotes: number;
+  lastUpdated: string;
+  category: string;
+};
+const VoteRuler = ({ lastUpdated, category }: Props) => {
+  const parsedDate = parseISO(lastUpdated);
+  const daysAgo = differenceInDays(new Date(), parsedDate);
+  const monthsAgo = differenceInMonths(new Date(), parsedDate);
+
+  return (
+    <Container>
+      <H6
+        style={{ textAlign: "right", paddingRight: "35px" }}
+        $weight={fontWeight.bold}
+        color={appColors.colorWhite}
       >
-        <img src="/img/thumbs-up.svg" alt="thumbs up" />
-      </button>
-      <button
-        className="icon-button"
-        aria-label="thumbs down"
-        style={{ width: "30px", height: "30px", padding: "6px" }}
-      >
-        <img src="/img/thumbs-down.svg" alt="thumbs down" />
-      </button>
-      <Button>Vote Now</Button>
-    </VoteContainer>
-    <Gauge positiveVotes={237} negativeVotes={894} />
-  </Container>
-);
+        {`${
+          monthsAgo > 0 ? `${monthsAgo} month` : `${daysAgo} days`
+        } ago in ${category}`}
+      </H6>
+      <VoteContainer>
+        <button
+          className="icon-button"
+          aria-label="thumbs up"
+          style={{ width: "30px", height: "30px", padding: "6px" }}
+        >
+          <img src="/img/thumbs-up.svg" alt="thumbs up" />
+        </button>
+        <button
+          className="icon-button"
+          aria-label="thumbs down"
+          style={{ width: "30px", height: "30px", padding: "6px" }}
+        >
+          <img src="/img/thumbs-down.svg" alt="thumbs down" />
+        </button>
+
+        <Button>Vote Now</Button>
+      </VoteContainer>
+    </Container>
+  );
+};
 
 export default VoteRuler;
