@@ -32,13 +32,17 @@ const Arrow = styled.img<{ $isOpen: boolean }>`
   margin-left: auto;
 `;
 
-const Item = styled.button<{ $lastItem?: boolean }>`
+const Item = styled.li<{ $lastItem?: boolean }>`
   background-color: var(--color-white);
   border: 2px solid var(--color-darker-gray);
   border-top: ${({ $lastItem }) => ($lastItem ? "none" : "")};
   height: 36px;
   cursor: pointer;
   z-index: 20;
+  list-style-type: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &:hover {
     background-color: var(--color-light-gray);
@@ -55,7 +59,10 @@ const SelectView = () => {
 
   return (
     <>
-      <Btn onClick={() => setIsOpen(!isOpen)}>
+      <Btn
+        onClick={() => setIsOpen(!isOpen)}
+        data-testid="select-view-component"
+      >
         <div style={{ width: "100%", marginLeft: "auto", display: "flex" }}>
           <span style={{ marginLeft: "auto" }}>{view}</span>
           <Arrow src="/img/triangle.svg" alt="arrow" $isOpen={isOpen} />

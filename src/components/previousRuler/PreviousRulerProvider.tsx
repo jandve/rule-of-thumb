@@ -75,3 +75,5 @@ const PreviousRulerProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export { PreviousRulerProvider, PreviousRulerProviderContext, ViewOptions };
+
+export type { ContextModel };
