@@ -1,10 +1,15 @@
 ## Start the project
 
-- configure your .env.local following .env.local.example
-- install dependencies using `npm install`
-- run `npm run start` this will start up the frontend
-- run `npm run json-server` this will start up json-serve and watch for changes
-- if you browser didn't open yet just navigate in your browser to localhost:3000
+    - run the command `docker compose up -d front`
+    - go to your browser on the url `localhost:3000`
+
+## Devlopement
+
+    - configure your .env.local following .env.local.example
+    - install dependencies using `npm install`
+    - run `npm run start` this will start up the frontend
+    - run `npm run json-server` this will start up json-serve and watch for changes
+    - if you browser didn't open yet just navigate in your browser to localhost:3000
 
 ## Available Scripts
 

@@ -54,9 +54,6 @@ const P = styled.p<{ $weight?: fontWeight; color?: appColors }>`
   color: ${({ color }) => (color ? color : appColors.colorBlack)};
   line-height: normal;
   margin: 0;
-  // @media (min-width: ${IS_MOBILE}px) {
-  //   font-size: 14px;
-  // }
 `;
 
 const H6 = styled.h6<{ $weight?: fontWeight; color?: appColors }>`
