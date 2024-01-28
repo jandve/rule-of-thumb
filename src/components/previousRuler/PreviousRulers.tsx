@@ -40,7 +40,8 @@ const RulerContainer = styled.div<{
   display: ${({ $view, $deviceType }) =>
     getGridColumns($view, $deviceType).display};
   gap: 1rem;
-  overflow-x: scroll;
+  overflow-x: ${({ $deviceType }) =>
+    $deviceType === DeviceTypeEnum.mobil ? "scroll" : "unset"};
   margin-right: ${({ $deviceType }) =>
     $deviceType !== DeviceTypeEnum.mobil ? "1rem" : "0"};
   grid-template-columns: ${({ $view, $deviceType }) =>

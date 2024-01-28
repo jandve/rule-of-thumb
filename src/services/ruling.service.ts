@@ -1,4 +1,5 @@
 import { PreviousRulingResponse, Ruler, Votes } from "./types";
+import { formatISO } from "date-fns";
 
 const getPassRulings = async (): Promise<
   PreviousRulingResponse | undefined
@@ -24,7 +25,7 @@ const postARulingVote = async (rulerId: number, votes: Votes) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ votes }),
+        body: JSON.stringify({ votes, lastUpdated: formatISO(new Date()) }),
       }
     );
     return await response.json();

@@ -12,8 +12,10 @@ import { DeviceTypeEnum } from "../../../constants/appConstants";
 const Container = styled.div<{
   $pictureUrl?: string;
   $isBigCard?: boolean;
+  $deviceType?: DeviceTypeEnum;
 }>`
-  min-width: 351px;
+  ${({ $deviceType }) =>
+    $deviceType === DeviceTypeEnum.mobil ? "min-width: 351px" : null};
   min-height: ${({ $isBigCard }) => ($isBigCard ? "351px" : "138px")};
   background: ${({ $pictureUrl, $isBigCard }) =>
     $pictureUrl && $isBigCard ? `url(${`/img/${$pictureUrl}`})` : "none"};
@@ -43,9 +45,13 @@ const RulingCard = ({ ruler }: Props) => {
     PreviousRulerProviderContext
   );
   const isShowGradientMaskVisible = !isBigCard && view === ViewOptions.list;
-
   return (
-    <Container $pictureUrl={ruler.picture} $isBigCard={isBigCard}>
+    <Container
+      $pictureUrl={ruler.picture}
+      $isBigCard={isBigCard}
+      $deviceType={deviceType}
+      data-testid="ruler-card"
+    >
       {deviceType !== DeviceTypeEnum.mobil && view === ViewOptions.list && (
         <div
           style={{
@@ -73,7 +79,7 @@ const RulingCard = ({ ruler }: Props) => {
         negativeVotes={ruler.votes.negative}
       />
       {isShowGradientMaskVisible && view === ViewOptions.list && (
-        <GradientMask />
+        <GradientMask data-testid="gradient-mask" />
       )}
     </Container>
   );

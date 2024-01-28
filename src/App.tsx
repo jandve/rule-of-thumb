@@ -10,12 +10,14 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <AsideTop />
-      <PreviousRulerProvider>
-        <PreviousRulers />
-      </PreviousRulerProvider>
-      <AsideBottom />
-      <Footer />
+      <div style={{ maxWidth: "1100px", margin: "auto" }}>
+        <AsideTop />
+        <PreviousRulerProvider>
+          <PreviousRulers />
+        </PreviousRulerProvider>
+        <AsideBottom />
+        <Footer />
+      </div>
     </div>
   );
 }
