@@ -1,0 +1,20 @@
+version: "3"
+services:
+  front:
+    build: .
+    ports:
+      - "3000:3000"
+    expose:
+      - 3000
+    container_name: rule-of-thumb
+    depends_on:
+      - server
+
+  server:
+    build: .
+    ports:
+      - "8000:8000"
+    expose:
+      - 8000
+    command: npm run json-server
+    container_name: json-server
