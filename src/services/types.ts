@@ -1,17 +1,18 @@
-interface PreviousRulingResponse {
-  data: Ruler[]
-}
+type PreviousRulingResponse = Ruler[];
 
 interface Ruler {
+  id: number;
   name: string;
   description: string;
   category: string;
   picture: string;
   lastUpdated: string;
-  votes: {
-    positive: number;
-    negative: number;
-  }
+  votes: Votes;
 }
 
-export type { PreviousRulingResponse, Ruler }
+interface Votes {
+  positive: number;
+  negative: number;
+}
+
+export type { PreviousRulingResponse, Ruler, Votes };

@@ -64,6 +64,9 @@ const VoteRuler = ({ ruler }: Props) => {
       setVoteIs(VoteIsOptions.notReady);
     } else {
       setVoteCompleted(true);
+      voteIs === VoteIsOptions.positive
+        ? ruler.votes.positive++
+        : ruler.votes.negative++;
       postAVote(ruler);
     }
   };

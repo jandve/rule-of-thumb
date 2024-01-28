@@ -1,5 +1,4 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
-import { RULING_MOCK } from "../../services/ruling.mock";
 import { Ruler } from "../../services/types";
 import useScreen from "../../hooks/useScreen";
 import { DeviceTypeEnum } from "../../constants/appConstants";
@@ -42,25 +41,15 @@ const PreviousRulerProvider = ({ children }: { children: ReactNode }) => {
       (deviceType !== DeviceTypeEnum.mobil && view === ViewOptions.grid) ||
         deviceType === DeviceTypeEnum.mobil
     );
-  }, [deviceType]);
+  }, [deviceType, view]);
 
   const getPreviousRulers = async () => {
-    try {
-      const data = await getPassRulings();
-      if (RULING_MOCK.data) {
-        setPreviousRulers(RULING_MOCK.data);
-      }
-    } catch (e: unknown) {
-      if (e instanceof TypeError) {
-        throw new Error(
-          `something went wrong fetching rulers with message: ${e.message}`
-        );
-      } else console.log("something went wrong fetching rulers");
-    }
+    const data = await getPassRulings();
+    if (data) setPreviousRulers(data);
   };
 
   const postAVote = (ruler: Ruler) => {
-    postARulingVote(ruler);
+    postARulingVote(ruler.id, ruler.votes).then(() => getPreviousRulers());
   };
 
   const onSetView = (view: ViewOptions) => {
