@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Ruler } from "../../../services/types";
-import { useContext, useLayoutEffect, useRef, useState } from "react";
+import { useContext } from "react";
 import {
   PreviousRulerProviderContext,
   ViewOptions,
@@ -19,17 +19,13 @@ const Container = styled.div<{
     $pictureUrl && $isBigCard ? `url(${`/img/${$pictureUrl}`})` : "none"};
   background-size: cover;
   position: relative;
-  @media (min-width: ${IS_MOBILE}px) {
-    width: 100%;
-    height: 138px;
-  }
 `;
 
-const GradientMask = styled.div<{ $width: number }>`
+const GradientMask = styled.div`
   position: absolute;
   top: 0;
   height: 138px;
-  width: ${({ $width }) => ($width ? `${$width}px` : "0")};
+  width: 100%;
   background: linear-gradient(
     90deg,
     rgba(0, 0, 0, 0) 0%,
@@ -43,23 +39,13 @@ type Props = {
   ruler: Ruler;
 };
 const RulingCard = ({ ruler }: Props) => {
-  const { view, deviceType } = useContext(PreviousRulerProviderContext);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [readyToView, setReadyToView] = useState(false);
-  const isBigCard =
-    (deviceType !== DeviceTypeEnum.mobil && view === ViewOptions.grid) ||
-    deviceType === DeviceTypeEnum.mobil;
-
-  useLayoutEffect(() => {
-    setReadyToView(true);
-  }, []);
+  const { view, deviceType, isBigCard } = useContext(
+    PreviousRulerProviderContext
+  );
+  const isShowGradientMaskVisible = !isBigCard && view === ViewOptions.list;
 
   return (
-    <Container
-      ref={containerRef}
-      $pictureUrl={ruler.picture}
-      $isBigCard={isBigCard}
-    >
+    <Container $pictureUrl={ruler.picture} $isBigCard={isBigCard}>
       {deviceType !== DeviceTypeEnum.mobil && view === ViewOptions.list && (
         <div
           style={{
@@ -86,12 +72,9 @@ const RulingCard = ({ ruler }: Props) => {
         positiveVotes={ruler.votes.positive}
         negativeVotes={ruler.votes.negative}
       />
-      {containerRef.current &&
-        readyToView &&
-        !deviceType &&
-        view === ViewOptions.list && (
-          <GradientMask $width={containerRef.current.clientWidth} />
-        )}
+      {isShowGradientMaskVisible && view === ViewOptions.list && (
+        <GradientMask />
+      )}
     </Container>
   );
 };

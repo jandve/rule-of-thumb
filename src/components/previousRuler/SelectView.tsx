@@ -6,11 +6,6 @@ import {
 } from "./PreviousRulerProvider";
 import { DeviceTypeEnum } from "../../constants/appConstants";
 
-const Container = styled.div`
-  border: 2px solid var(--color-darker-gray);
-  width: 173px;
-`;
-
 const ContentContainer = styled.div`
   position: absolute;
   top: 32px;
@@ -52,11 +47,9 @@ const Item = styled.button<{ $lastItem?: boolean }>`
 
 const SelectView = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { view, setView, deviceType } = useContext(
+  const { view, onSetView, deviceType } = useContext(
     PreviousRulerProviderContext
   );
-
-  console.log(deviceType === DeviceTypeEnum.mobil);
 
   if (deviceType === DeviceTypeEnum.mobil) return null;
 
@@ -69,8 +62,8 @@ const SelectView = () => {
         </div>
         {isOpen && (
           <ContentContainer>
-            <Item onClick={() => setView(ViewOptions.list)}>List</Item>
-            <Item $lastItem onClick={() => setView(ViewOptions.grid)}>
+            <Item onClick={() => onSetView(ViewOptions.list)}>List</Item>
+            <Item $lastItem onClick={() => onSetView(ViewOptions.grid)}>
               Grid
             </Item>
           </ContentContainer>

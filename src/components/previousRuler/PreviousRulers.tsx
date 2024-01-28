@@ -14,16 +14,37 @@ const Container = styled.div`
   margin-left: 1rem;
 `;
 
+function getGridColumns(view: ViewOptions, deviceType: DeviceTypeEnum) {
+  if (deviceType === DeviceTypeEnum.mobil)
+    return { display: "flex", columns: "1fr" };
+
+  // Tablet
+
+  if (view === ViewOptions.list && deviceType === DeviceTypeEnum.tablet)
+    return { display: "grid", columns: "1fr" };
+
+  if (deviceType === DeviceTypeEnum.tablet)
+    return { display: "grid", columns: "1fr 1fr" };
+
+  // Desktop
+
+  if (view === ViewOptions.list) return { display: "grid", columns: "1fr" };
+
+  return { display: "grid", columns: "1fr 1fr 1fr" };
+}
+
 const RulerContainer = styled.div<{
   $view: ViewOptions;
-  $isMobile: DeviceTypeEnum;
+  $deviceType: DeviceTypeEnum;
 }>`
-  display: ${({ $isMobile }) => ($isMobile ? "flex" : "grid")};
+  display: ${({ $view, $deviceType }) =>
+    getGridColumns($view, $deviceType).display};
   gap: 1rem;
   overflow-x: scroll;
-  margin-right: ${({ $isMobile }) => (!$isMobile ? "1rem" : "0")};
-  grid-template-columns: ${({ $view }) =>
-    $view === ViewOptions.grid ? "1fr 1fr 1fr" : "1fr"};
+  margin-right: ${({ $deviceType }) =>
+    $deviceType !== DeviceTypeEnum.mobil ? "1rem" : "0"};
+  grid-template-columns: ${({ $view, $deviceType }) =>
+    getGridColumns($view, $deviceType).columns};
 `;
 
 const ViewContainer = styled.div`
@@ -33,7 +54,7 @@ const ViewContainer = styled.div`
 `;
 
 const PreviousRulers = () => {
-  const { previousRulers, view, deviceType } = useContext(
+  const { previousRulers, deviceType, view } = useContext(
     PreviousRulerProviderContext
   );
 
@@ -49,7 +70,7 @@ const PreviousRulers = () => {
         </H2>
         <SelectView />
       </ViewContainer>
-      <RulerContainer $view={view} $isMobile={deviceType}>
+      <RulerContainer $deviceType={deviceType} $view={view}>
         {previousRulers.map((ruler: Ruler) => (
           <RulingCard key={ruler.name} ruler={ruler} />
         ))}

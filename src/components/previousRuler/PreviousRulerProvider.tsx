@@ -12,14 +12,14 @@ enum ViewOptions {
 type ContextModel = {
   previousRulers: Ruler[];
   view: ViewOptions;
-  setView: (view: ViewOptions) => void;
+  onSetView: (view: ViewOptions) => void;
   deviceType: DeviceTypeEnum;
   isBigCard: boolean;
 };
 const PreviousRulerProviderContext = createContext<ContextModel>({
   previousRulers: [],
   view: ViewOptions.list,
-  setView: () => null,
+  onSetView: () => null,
   deviceType: DeviceTypeEnum.desktop,
   isBigCard: false,
 });
@@ -47,12 +47,18 @@ const PreviousRulerProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const onSetView = (view: ViewOptions) => {
+    setView(view);
+    if (view === ViewOptions.grid) setIsBigCard(true);
+    else setIsBigCard(false);
+  };
+
   return (
     <PreviousRulerProviderContext.Provider
       value={{
         previousRulers,
         view,
-        setView,
+        onSetView,
         deviceType,
         isBigCard,
       }}

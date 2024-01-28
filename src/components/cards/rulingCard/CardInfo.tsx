@@ -15,6 +15,7 @@ const Container = styled.div<{ $isBigCard?: boolean }>`
   gap: 0.5rem;
   position: absolute;
   top: ${({ $isBigCard }) => ($isBigCard ? "40%" : "0")};
+  width: 100%;
 `;
 
 const ThumbContainer = styled.div`
@@ -23,10 +24,12 @@ const ThumbContainer = styled.div`
 
 const DescriptionContainer = styled.div<{ $isBigCard: boolean }>`
   text-align: left;
-  // display: flex;
-  // flex-direction: column;
-  // gap: 1rem;
-  // margin-left: ${({ $isBigCard }) => ($isBigCard ? "0px" : "150px")};
+`;
+
+const DescriptionWrapper = styled.div<{ $isBigCard: boolean }>`
+  flex-grow: 1;
+  margin: ${({ $isBigCard }) => ($isBigCard ? "0" : "5px 35px 15px 150px")};
+  z-index: 10;
 `;
 
 const Paragraph = styled(P)`
@@ -48,6 +51,7 @@ const TruncatedText = styled.span`
 
 const CardInfo = ({ winner, ruler }: Props) => {
   const { isBigCard } = useContext(PreviousRulerProviderContext);
+
   return (
     <Container $isBigCard={isBigCard}>
       <ThumbContainer>
@@ -62,9 +66,14 @@ const CardInfo = ({ winner, ruler }: Props) => {
           />
         </div>
       </ThumbContainer>
-      <div style={{ width: "316px" }}>
+      <DescriptionWrapper $isBigCard={isBigCard}>
         <DescriptionContainer $isBigCard={isBigCard}>
-          <H1 color={appColors.colorWhite}>{ruler.name}</H1>
+          <H1
+            color={appColors.colorWhite}
+            style={{ marginBottom: `${isBigCard ? "0" : "20px"}` }}
+          >
+            {ruler.name}
+          </H1>
           <div
             style={{ height: "36px", overflow: "hidden", position: "relative" }}
           >
@@ -73,19 +82,23 @@ const CardInfo = ({ winner, ruler }: Props) => {
             </Paragraph>
           </div>
         </DescriptionContainer>
+        {isBigCard && (
+          <VoteRuler
+            positiveVotes={ruler.votes.positive}
+            negativeVotes={ruler.votes.negative}
+            lastUpdated={ruler.lastUpdated}
+            category={ruler.category}
+          />
+        )}
+      </DescriptionWrapper>
+      {!isBigCard && (
         <VoteRuler
           positiveVotes={ruler.votes.positive}
           negativeVotes={ruler.votes.negative}
           lastUpdated={ruler.lastUpdated}
           category={ruler.category}
         />
-      </div>
-      {/*<VoteRuler*/}
-      {/*  positiveVotes={ruler.votes.positive}*/}
-      {/*  negativeVotes={ruler.votes.negative}*/}
-      {/*  lastUpdated={ruler.lastUpdated}*/}
-      {/*  category={ruler.category}*/}
-      {/*/>*/}
+      )}
     </Container>
   );
 };
