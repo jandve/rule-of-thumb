@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import { Ruler } from "../../../services/types";
 import { useContext } from "react";
+import Gauge from "./Gauge";
+import CardInfo from "./CardInfo";
 import {
   PreviousRulerProviderContext,
   ViewOptions,
 } from "../../previousRuler/PreviousRulerProvider";
-import { DeviceTypeEnum, IS_MOBILE } from "../../../constants/appConstants";
-import Gauge from "./Gauge";
-import CardInfo from "./CardInfo";
+import { DeviceTypeEnum } from "../../../constants/appConstants";
 
 const Container = styled.div<{
   $pictureUrl?: string;

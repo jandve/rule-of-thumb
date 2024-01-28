@@ -3,6 +3,7 @@ import { RULING_MOCK } from "../../services/ruling.mock";
 import { Ruler } from "../../services/types";
 import useScreen from "../../hooks/useScreen";
 import { DeviceTypeEnum } from "../../constants/appConstants";
+import { getPassRulings, postARulingVote } from "../../services/ruling.service";
 
 enum ViewOptions {
   list = "List",
@@ -13,6 +14,7 @@ type ContextModel = {
   previousRulers: Ruler[];
   view: ViewOptions;
   onSetView: (view: ViewOptions) => void;
+  postAVote: (ruler: Ruler) => void;
   deviceType: DeviceTypeEnum;
   isBigCard: boolean;
 };
@@ -20,6 +22,7 @@ const PreviousRulerProviderContext = createContext<ContextModel>({
   previousRulers: [],
   view: ViewOptions.list,
   onSetView: () => null,
+  postAVote: () => null,
   deviceType: DeviceTypeEnum.desktop,
   isBigCard: false,
 });
@@ -41,10 +44,23 @@ const PreviousRulerProvider = ({ children }: { children: ReactNode }) => {
     );
   }, [deviceType]);
 
-  const getPreviousRulers = () => {
-    if (RULING_MOCK.data) {
-      setPreviousRulers(RULING_MOCK.data);
+  const getPreviousRulers = async () => {
+    try {
+      const data = await getPassRulings();
+      if (RULING_MOCK.data) {
+        setPreviousRulers(RULING_MOCK.data);
+      }
+    } catch (e: unknown) {
+      if (e instanceof TypeError) {
+        throw new Error(
+          `something went wrong fetching rulers with message: ${e.message}`
+        );
+      } else console.log("something went wrong fetching rulers");
     }
+  };
+
+  const postAVote = (ruler: Ruler) => {
+    postARulingVote(ruler);
   };
 
   const onSetView = (view: ViewOptions) => {
@@ -61,6 +77,7 @@ const PreviousRulerProvider = ({ children }: { children: ReactNode }) => {
         onSetView,
         deviceType,
         isBigCard,
+        postAVote,
       }}
     >
       {children}

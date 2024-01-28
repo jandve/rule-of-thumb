@@ -1,5 +1,5 @@
 import { RULING_MOCK } from "./ruling.mock";
-import { PreviousRulingResponse } from "./types";
+import { PreviousRulingResponse, Ruler } from "./types";
 
 const getPassRulings = (): Promise<PreviousRulingResponse> => {
   return new Promise((resolve) => {
@@ -9,4 +9,6 @@ const getPassRulings = (): Promise<PreviousRulingResponse> => {
   });
 };
 
-export { getPassRulings };
+const postARulingVote = (ruler: Ruler) => {};
+
+export { getPassRulings, postARulingVote };
