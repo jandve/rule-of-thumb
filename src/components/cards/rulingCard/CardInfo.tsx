@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { appColors, H1, P } from "../../common/Typography";
 import { useContext } from "react";
-import { PreviousRulerProviderContext } from "../../previousRuler/PreviousRulerProvider";
 import VoteRuler from "./VoteRuler";
 import { Ruler } from "../../../services/types";
+import { PreviousRulerProviderContext } from "../../previousRuler/PreviousRulerProvider";
 
 type Props = {
   winner: boolean;
@@ -82,23 +82,9 @@ const CardInfo = ({ winner, ruler }: Props) => {
             </Paragraph>
           </div>
         </DescriptionContainer>
-        {isBigCard && (
-          <VoteRuler
-            positiveVotes={ruler.votes.positive}
-            negativeVotes={ruler.votes.negative}
-            lastUpdated={ruler.lastUpdated}
-            category={ruler.category}
-          />
-        )}
+        {isBigCard && <VoteRuler ruler={ruler} />}
       </DescriptionWrapper>
-      {!isBigCard && (
-        <VoteRuler
-          positiveVotes={ruler.votes.positive}
-          negativeVotes={ruler.votes.negative}
-          lastUpdated={ruler.lastUpdated}
-          category={ruler.category}
-        />
-      )}
+      {!isBigCard && <VoteRuler ruler={ruler} />}
     </Container>
   );
 };

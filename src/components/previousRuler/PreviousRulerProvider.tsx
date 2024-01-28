@@ -1,8 +1,8 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
-import { RULING_MOCK } from "../../services/ruling.mock";
 import { Ruler } from "../../services/types";
 import useScreen from "../../hooks/useScreen";
 import { DeviceTypeEnum } from "../../constants/appConstants";
+import { getPassRulings, postARulingVote } from "../../services/ruling.service";
 
 enum ViewOptions {
   list = "List",
@@ -13,6 +13,7 @@ type ContextModel = {
   previousRulers: Ruler[];
   view: ViewOptions;
   onSetView: (view: ViewOptions) => void;
+  postAVote: (ruler: Ruler) => void;
   deviceType: DeviceTypeEnum;
   isBigCard: boolean;
 };
@@ -20,6 +21,7 @@ const PreviousRulerProviderContext = createContext<ContextModel>({
   previousRulers: [],
   view: ViewOptions.list,
   onSetView: () => null,
+  postAVote: () => null,
   deviceType: DeviceTypeEnum.desktop,
   isBigCard: false,
 });
@@ -39,12 +41,15 @@ const PreviousRulerProvider = ({ children }: { children: ReactNode }) => {
       (deviceType !== DeviceTypeEnum.mobil && view === ViewOptions.grid) ||
         deviceType === DeviceTypeEnum.mobil
     );
-  }, [deviceType]);
+  }, [deviceType, view]);
 
-  const getPreviousRulers = () => {
-    if (RULING_MOCK.data) {
-      setPreviousRulers(RULING_MOCK.data);
-    }
+  const getPreviousRulers = async () => {
+    const data = await getPassRulings();
+    if (data) setPreviousRulers(data);
+  };
+
+  const postAVote = (ruler: Ruler) => {
+    postARulingVote(ruler.id, ruler.votes).then(() => getPreviousRulers());
   };
 
   const onSetView = (view: ViewOptions) => {
@@ -61,6 +66,7 @@ const PreviousRulerProvider = ({ children }: { children: ReactNode }) => {
         onSetView,
         deviceType,
         isBigCard,
+        postAVote,
       }}
     >
       {children}

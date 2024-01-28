@@ -13,7 +13,6 @@ const useScreen = () => {
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
-      console.log(width);
       if (width < IS_TABLET) {
         setDeviceType(DeviceTypeEnum.mobil);
       } else if (width >= IS_TABLET && width < IS_DESKTOP) {
