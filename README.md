@@ -1,5 +1,6 @@
 ## Start the project
 
+    - configure your .env.local following .env.local.example
     - run the command `docker compose up -d front`
     - go to your browser on the url `localhost:3000`
 
